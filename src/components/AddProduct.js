@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-// import { FaFileUpload } from "react-icons/fa";
+import { FaFileUpload } from "react-icons/fa";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -28,7 +28,7 @@ const AddProduct = () => {
     formData.append("title", product.title);
     formData.append("description", product.description);
     formData.append("price", product.price);
-    // formData.append("image", image);
+    formData.append("image", image);
 
     try {
       await axios.post("/api/addproducts", formData);
@@ -45,8 +45,7 @@ const AddProduct = () => {
         <h1 className="text-2xl my-2 text-gray-300 font-bold">
           Add New Product
         </h1>
-        {/* 
-       <div className="w-full flex flex-col gap-2 ">
+        <div className="w-full flex flex-col gap-2 ">
           <label
             className="text-sm cursor-pointer flex gap-4 items-center"
             htmlFor="file"
@@ -64,7 +63,6 @@ const AddProduct = () => {
             onChange={handleImageUpload}
           />
         </div>
-      */}
         <div className="w-full flex flex-col gap-2 ">
           <label className="text-sm">Title</label>
           <input

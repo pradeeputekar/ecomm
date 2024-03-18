@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 

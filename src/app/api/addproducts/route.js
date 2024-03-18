@@ -9,14 +9,14 @@ export async function POST(req) {
   const title = formData.get("title");
   const description = formData.get("description");
   const price = formData.get("price");
-  // const image = formData.get("image");
-  // const data = await uploadImage(image, "ShopCart");
+  const image = formData.get("image");
+  const data = await uploadImage(image, "ShopCart");
   await Product.create({
     title: title,
     description: description,
     price: price,
-    // image_url: data?.secure_url,
-    // public_id: data?.public_id,
+    image_url: data?.secure_url,
+    public_id: data?.public_id,
   });
 
   return NextResponse.json({ msg: data }, { status: 200 });
