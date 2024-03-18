@@ -31,7 +31,7 @@ const AddProduct = () => {
     formData.append("image", image);
 
     try {
-      await axios.post("/api/products", formData);
+      await axios.post("/api/addproducts", formData);
       toast.success("Product Added Successfully");
     } catch (error) {
       console.error("Error adding product:", error);
