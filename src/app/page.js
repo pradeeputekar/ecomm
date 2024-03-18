@@ -1,9 +1,13 @@
-import Navbar from "../components/Navbar"
+import FetchProducts from "@/components/FetchProducts";
+import Notification from "@/components/Notification";
+
 const Home = () => {
-  return <>
-  <Navbar />
-    
-  <div>sgdd</div>
-  </> 
-}
-export default Home
+  return (
+    <>
+      <Notification />
+      <FetchProducts />
+    </>
+  );
+};
+
+export default Home;
