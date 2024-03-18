@@ -20,9 +20,7 @@ const ProductCard = ({ product }) => {
   const deleteProduct = async (e) => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        "/api/products/" + e.replace("ShopCart/", "")
-      );
+      const response = await axios.delete("/api/products/" + e);
     } catch (error) {
       console.log(error);
     } finally {

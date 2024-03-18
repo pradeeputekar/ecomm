@@ -1,23 +1,51 @@
 import { connectMongoDB } from "@/utils/db";
 import Product from "@/models/products";
-import { uploadImage } from "@/utils/upload-image";
+import cloudinary from "@/utils/cloudinary";
 import { NextResponse } from "next/server";
 
 connectMongoDB();
 export async function POST(req) {
-  const formData = await req.formData();
-  const title = formData.get("title");
-  const description = formData.get("description");
-  const price = formData.get("price");
-  const image = formData.get("image");
-  const data = await uploadImage(image, "ShopCart");
-  await Product.create({
-    title: title,
-    description: description,
-    price: price,
-    image_url: data?.secure_url,
-    public_id: data?.public_id,
-  });
+  const data = await req.formData();
+  const title = await data.get("title");
+  const description = await data.get("description");
+  const price = await data.get("price");
+  const image = await data.get("image");
+  const fileBuffer = await image.arrayBuffer();
 
-  return NextResponse.json({ msg: data }, { status: 200 });
+  var mime = image.type;
+  var encoding = "base64";
+  var base64Data = Buffer.from(fileBuffer).toString("base64");
+  var fileUri = "data:" + mime + ";" + encoding + "," + base64Data;
+
+  try {
+    const uploadToCloudinary = () => {
+      return new Promise((resolve, reject) => {
+        var result = cloudinary.uploader
+          .upload(fileUri, {
+            invalidate: true,
+          })
+          .then((result) => {
+            console.log(result);
+            resolve(result);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+    const result = await uploadToCloudinary();
+    await Product.create({
+      title: title,
+      description: description,
+      price: price,
+      image_url: result?.secure_url,
+      public_id: result?.public_id,
+    });
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.log("server err", error);
+    return NextResponse.json({ err: "Internal Server Error" }, { status: 500 });
+  }
 }

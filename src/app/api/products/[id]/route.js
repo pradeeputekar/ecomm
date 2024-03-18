@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 connectMongoDB();
 export async function DELETE(req, ctx) {
-  const imagePublicId = "ShopCart/" + ctx.params.id;
+  const imagePublicId = ctx.params.id;
   const resultDelete = await deleteImage(imagePublicId);
   await Product.findOneAndDelete({
     public_id: imagePublicId,
