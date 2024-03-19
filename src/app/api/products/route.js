@@ -4,9 +4,11 @@ import { NextResponse } from "next/server";
 
 connectMongoDB();
 
-export async function GET(req) {
+export async function GET(req, res) {
   try {
     const data = await Product.find({});
+
+    res.setHeader("Cache-Control", "no-cache");
 
     return new NextResponse(
       JSON.stringify(data),

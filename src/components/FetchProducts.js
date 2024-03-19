@@ -17,7 +17,7 @@ function FetchProducts() {
       try {
         const res = await axios.get("/api/products", {
           headers: {
-            "Cache-Control": "no-store",
+            "Cache-Control": "no-cache",
           },
         });
 
