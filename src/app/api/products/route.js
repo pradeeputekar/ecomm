@@ -4,17 +4,19 @@ import { NextResponse } from "next/server";
 
 connectMongoDB();
 
-export async function GET(req, res) {
+export async function GET(req) {
   try {
     const data = await Product.find({});
 
-    res.setHeader("Cache-Control", "no-cache");
+    const response = new NextResponse(JSON.stringify(data), {
+      message: "fetch product sucessfully",
+      status: 200,
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
 
-    return new NextResponse(
-      JSON.stringify(data),
-      { message: "fetch product sucessfully" },
-      { status: 200 }
-    );
+    return response;
   } catch (error) {
     console.log(error);
     return new NextResponse(
