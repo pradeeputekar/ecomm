@@ -31,10 +31,7 @@ export async function POST(req, params) {
       { status: 200 }
     );
   }
-  return new NextResponse(
-    JSON.stringify({ message: "Order not found! apiintemnd" }),
-    {
-      status: 404,
-    }
-  );
+  return new NextResponse(JSON.stringify({ message: "Order not found!" }), {
+    status: 404,
+  });
 }

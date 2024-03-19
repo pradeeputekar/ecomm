@@ -14,7 +14,11 @@ function FetchProducts() {
 
   useEffect(() => {
     axios
-      .get("/api/products")
+      .get("/api/products", {
+        headers: {
+          "Cache-Control": "no-store",
+        },
+      })
       .then((response) => {
         const modifiedData = response.data.map((item) => ({
           ...item,
