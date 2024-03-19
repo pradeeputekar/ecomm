@@ -16,7 +16,7 @@ function FetchProducts() {
     axios
       .get("/api/products", {
         headers: {
-          cache: "no-store",
+          "Cache-Control": "no-store",
         },
       })
       .then((response) => {
