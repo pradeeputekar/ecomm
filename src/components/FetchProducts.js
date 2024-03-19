@@ -22,9 +22,8 @@ const FetchProducts = () => {
           throw new Error("Failed to fetch products");
         }
         const data = await response.json();
-        const modifiedData = data.map((item) => ({ ...item }));
-        setProducts(modifiedData);
-        dispatch(itemsActions.addInitialItems(modifiedData));
+        setProducts(data);
+        dispatch(itemsActions.addInitialItems(data));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -32,7 +31,7 @@ const FetchProducts = () => {
       }
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, setProducts]);
 
   return (
     <>

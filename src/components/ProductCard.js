@@ -21,8 +21,10 @@ const ProductCard = ({ product }) => {
     setLoading(true);
     try {
       const response = await axios.delete("/api/products/" + e);
+      toast.success("Product deleted successfully");
     } catch (error) {
       console.log(error);
+      toast.error("failed to delete product");
     } finally {
       setLoading(false);
     }
