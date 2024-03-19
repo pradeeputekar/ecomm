@@ -12,7 +12,7 @@ export async function GET(req) {
       message: "fetch product sucessfully",
       status: 200,
       headers: {
-        "Cache-Control": "no-cache",
+        cache: "no-store",
       },
     });
 
