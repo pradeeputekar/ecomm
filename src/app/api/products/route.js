@@ -4,16 +4,10 @@ import { NextResponse } from "next/server";
 
 connectMongoDB();
 
-export async function GET(req) {
+export async function GET() {
   try {
     const data = await Product.find({});
-
-    const response = new NextResponse(JSON.stringify(data), {
-      message: "fetch product sucessfully",
-      status: 200,
-    });
-
-    return response;
+    return new NextResponse(JSON.stringify(data), { status: 200 });
   } catch (error) {
     console.log(error);
     return new NextResponse(
