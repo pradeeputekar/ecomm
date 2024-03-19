@@ -11,10 +11,7 @@ export async function GET(req) {
     return new NextResponse(
       JSON.stringify(data),
       { message: "fetch product sucessfully" },
-      {
-        cache: "no-store",
-        status: 200,
-      }
+      { status: 200 }
     );
   } catch (error) {
     console.log(error);

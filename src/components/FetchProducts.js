@@ -13,21 +13,25 @@ function FetchProducts() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios
-      .get("/api/products", {
-        cache: "no-store",
-      })
-      .then((response) => {
-        const modifiedData = response.data.map((item) => ({
-          ...item,
-        }));
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/products", {
+          headers: {
+            "Cache-Control": "no-store",
+          },
+        });
+
+        const modifiedData = res.data.map((item) => ({ ...item }));
         setProducts(modifiedData);
         dispatch(itemsActions.addInitialItems(modifiedData));
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching data:", error);
-      });
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   return (
