@@ -11,9 +11,6 @@ export async function GET(req) {
     const response = new NextResponse(JSON.stringify(data), {
       message: "fetch product sucessfully",
       status: 200,
-      headers: {
-        "Cache-Control": "no-store",
-      },
     });
 
     return response;
