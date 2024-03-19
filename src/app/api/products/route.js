@@ -8,7 +8,7 @@ export async function GET(req) {
   try {
     const data = await Product.find({});
 
-    return NextResponse.json(data, {
+    return new NextResponse(JSON.stringify(data), {
       headers: {
         "Cache-Control": "no-store",
       },
