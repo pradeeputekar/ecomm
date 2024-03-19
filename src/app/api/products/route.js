@@ -10,7 +10,7 @@ export async function GET(req) {
 
     return NextResponse.json(data, {
       headers: {
-        cache: "no-store",
+        "Cache-Control": "no-store",
       },
       status: 200,
     });
