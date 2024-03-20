@@ -24,9 +24,9 @@ export default function RootLayout({ children }) {
             {children}
             <Footer />
             <ToastContainer
-              position="top-right"
+              position="bottom-right"
               theme="dark"
-              autoClose={3000}
+              autoClose={2000}
             />
           </NextAuthProvider>
         </ReduxProvider>

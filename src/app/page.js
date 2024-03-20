@@ -1,3 +1,4 @@
+"use client";
 import FetchProducts from "@/components/FetchProducts";
 import Notification from "@/components/Notification";
 

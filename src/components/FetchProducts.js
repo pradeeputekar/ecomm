@@ -23,7 +23,6 @@ const FetchProducts = () => {
         }
         const data = await response.json();
         setProducts(data);
-        dispatch(itemsActions.addInitialItems(data));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -31,7 +30,9 @@ const FetchProducts = () => {
       }
     };
     fetchData();
-  }, [dispatch, setProducts]);
+  }, []);
+
+  dispatch(itemsActions.addInitialItems(products));
 
   return (
     <>
