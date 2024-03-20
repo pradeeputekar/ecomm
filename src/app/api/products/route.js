@@ -46,7 +46,6 @@ export async function POST(req) {
             invalidate: true,
           })
           .then((result) => {
-            console.log(result);
             resolve(result);
           })
           .catch((error) => {
