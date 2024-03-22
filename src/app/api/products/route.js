@@ -30,6 +30,7 @@ export async function POST(req) {
   const title = await data.get("title");
   const description = await data.get("description");
   const price = await data.get("price");
+  const stock_qty = await data.get("stock_qty");
   const image = await data.get("image");
   const fileBuffer = await image.arrayBuffer();
 
@@ -55,15 +56,16 @@ export async function POST(req) {
       });
     };
     const result = await uploadToCloudinary();
-    await Product.create({
+    const datashow = await Product.create({
       title: title,
       description: description,
       price: price,
+      stock_qty: stock_qty,
       image_url: result?.secure_url,
       public_id: result?.public_id,
     });
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ datashow, success: true }, { status: 200 });
   } catch (error) {
     console.log("server err", error);
     return NextResponse.json({ err: "Internal Server Error" }, { status: 500 });

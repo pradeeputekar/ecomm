@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bagActions } from "@/store/slices/bagSlice";
 import { toast } from "react-toastify";
 import { MdClose } from "react-icons/md";
 
 function CartItems({ item }) {
   const dispatch = useDispatch();
-  const bag = useSelector((store) => store.bag);
 
   const handleRemoveItem = () => {
     dispatch(bagActions.removeFromBag(item._id));

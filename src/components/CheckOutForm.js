@@ -85,7 +85,7 @@ export default function CheckoutForm({ orderId }) {
   return (
     <>
       <div className="p-4 lg:px-20 xl:px-40 flex justify-between">
-        <h2>Payment</h2>
+        <h2 className="text-green-700 font-bold">Payment Details</h2>
         <span className="text-red-500">note: please use demo details</span>
       </div>
       <form
@@ -100,15 +100,7 @@ export default function CheckoutForm({ orderId }) {
           id="submit"
           className="bg-red-500 text-white p-4 rounded-md w-28"
         >
-          <span id="button-text">
-            {isLoading ? (
-              <div className="spinner" id="spinner">
-                Processing...
-              </div>
-            ) : (
-              "Pay now"
-            )}
-          </span>
+          {isLoading ? "Processing..." : "Pay now"}
         </button>
         {/* Show any error or success messages */}
         {message && <div id="payment-message">{message}</div>}

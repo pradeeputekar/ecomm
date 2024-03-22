@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import AddProduct from "@/components/AddProduct";
 import Loader from "@/components/Loader";
+import ManageProduct from "@/components/ManageProduct";
 
 const Admin = () => {
   const { data: session, status } = useSession();
@@ -21,6 +22,7 @@ const Admin = () => {
       </div>
       <div className="p-4 text-red-500">
         <AddProduct />
+        <ManageProduct />
       </div>
     </>
   );

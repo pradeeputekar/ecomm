@@ -17,6 +17,7 @@ function SignupForm() {
     password: null,
     confirmPassword: null,
   });
+  const [loading, setLoading] = useState(true);
 
   const validateName = (name) => {
     return name.length >= 2 ? null : "Name must be at least 2 characters";
@@ -73,35 +74,43 @@ function SignupForm() {
     event.preventDefault();
 
     if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    if (
       errors.name ||
       errors.email ||
       errors.password ||
       errors.confirmPassword
     ) {
       toast.error("Form has errors. Please fix them before submitting.");
-    } else {
-      try {
-        try {
-          const dataToSend = {
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-          };
-          const response = await axios.post("/api/auth/createuser", dataToSend);
-          toast.success("User registered successfully!");
-        } catch (error) {
-          toast.info("user already exist");
-          console.log("user already exist", error);
-        }
-      } catch (error) {
-        toast.error("internal server error");
-        console.error("internal server error", error);
-      }
+      return;
+    }
+    setLoading(false);
+    const dataToSend = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    };
+    try {
+      const response = await axios.post("/api/auth/createuser", dataToSend);
+      toast.success("User registered successfully!");
+    } catch (error) {
+      toast.info("user already exist");
+      console.log("user already exist", error);
+    } finally {
+      setLoading(true);
     }
   };
 
   return (
-    <div className="p-10  max-w-screen-sm flex justify-center flex-col gap-8 mx-auto">
+    <div className="p-10 w-full max-w-screen-sm md:w-1/2 lg:w-1/2 flex justify-center flex-col gap-6 mx-auto">
       <h1 className="font-bold text-lg xl:text-xl text-center">
         Welcome, Create your New Account
       </h1>
@@ -147,10 +156,11 @@ function SignupForm() {
         )}
 
         <button
+          disabled={!loading}
           className="p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           type="submit"
         >
-          Sign Up
+          {loading ? "Sign Up" : "Processing..."}
         </button>
       </form>
     </div>

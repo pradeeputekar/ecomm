@@ -9,6 +9,7 @@ const AddProduct = () => {
     title: "",
     description: "",
     price: "",
+    stock_qty: "",
   });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,13 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!product.title || !product.description || !product.price || !image) {
+    if (
+      !product.title ||
+      !product.description ||
+      !product.price ||
+      !product.stock_qty ||
+      !image
+    ) {
       toast.error("All fields are required");
       return;
     }
@@ -36,13 +43,13 @@ const AddProduct = () => {
     formData.append("title", product.title);
     formData.append("description", product.description);
     formData.append("price", product.price);
+    formData.append("stock_qty", product.stock_qty);
     formData.append("image", image);
 
     try {
       await axios.post("/api/products", formData);
       toast.success("Product Added Successfully");
-      setProduct({ title: "", description: "", price: "" });
-      setImage(null);
+      setProduct({ title: "", description: "", price: "", stock_qty: "" });
     } catch (error) {
       console.error("Error adding product:", error);
       toast.error("failed to add product");
@@ -86,6 +93,18 @@ const AddProduct = () => {
           placeholder="Product Price"
           name="price"
           value={product.price}
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <div className="w-full flex flex-col gap-2 ">
+        <label className="text-sm font-bold">Stock Quantity</label>
+        <input
+          className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
+          type="number"
+          placeholder="Stock Qty"
+          name="stock_qty"
+          value={product.stock_qty}
           onChange={handleInputChange}
         />
       </div>

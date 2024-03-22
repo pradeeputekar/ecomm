@@ -16,6 +16,8 @@ const LoginForm = () => {
     password: null,
   });
 
+  const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
   const validateEmail = (email) => {
@@ -52,9 +54,11 @@ const LoginForm = () => {
     event.preventDefault();
 
     if (errors.email || errors.password) {
-      console.log("Form has errors. Please fix them before submitting.");
+      toast.error("Form has errors. Please fix them before submitting.");
       return;
     }
+
+    setLoading(false);
     try {
       const res = await signIn("credentials", {
         ...formData,
@@ -63,16 +67,18 @@ const LoginForm = () => {
       if (res?.error) {
         toast.error("Invalid credentials");
       } else {
-        toast.success("successful login");
+        toast.success("Login successfully");
         router.push("/");
       }
     } catch (error) {
       toast.error("Internal server error");
       console.error("Error signing in:", error);
+    } finally {
+      setLoading(true);
     }
   };
   return (
-    <div className="p-10  max-w-screen-sm flex justify-center flex-col gap-8 mx-auto">
+    <div className="p-10 w-full max-w-screen-sm md:w-1/2 lg:w-1/2 flex justify-center flex-col gap-6 mx-auto">
       <h1 className="font-bold text-lg xl:text-xl text-center">
         Welcome, Log In into your Account
       </h1>
@@ -96,28 +102,32 @@ const LoginForm = () => {
           <div className="text-red-600">{errors.password}</div>
         )}
         <button
+          disabled={!loading}
           type="submit"
           className="p-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
-          Log in
+          {loading ? "Log in" : "Processing..."}
         </button>
       </form>
-      <hr className="my-2" />
+      <div className="text-center">
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        Don't have an account?{" "}
+        <Link className="text-blue-900" href="/register">
+          Sign Up here
+        </Link>
+      </div>
+
+      <span className="text-center">OR</span>
+
       <button
-        className="flex gap-4 p-4 ring-1 ring-orange-100 rounded-md text-center justify-center"
+        className="flex gap-4 p-4 ring-1 ring-blue-700 rounded-md text-center justify-center"
         onClick={() => {
           signIn("google");
         }}
       >
         <FaGoogle size={20} />
-        <span className="self-center"> Log In with Google </span>
+        <span className="self-center"> Continue with Google </span>
       </button>
-      <Link
-        className="p-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-center"
-        href="/register"
-      >
-        Sign Up
-      </Link>
     </div>
   );
 };
