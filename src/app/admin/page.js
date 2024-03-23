@@ -1,12 +1,36 @@
 "use client";
 import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import AddProduct from "@/components/AddProduct";
 import Loader from "@/components/Loader";
 import ManageProduct from "@/components/ManageProduct";
 
 const Admin = () => {
+  const [products, setProducts] = useState([]);
   const { data: session, status } = useSession();
   const isAdmin = session?.user?.admin;
+
+  useEffect(() => {
+    if (status === "authenticated" && isAdmin) {
+      fetchData();
+    }
+  }, [status, isAdmin]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/products", {
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   if (status === "loading") {
     return <Loader />;
   }
@@ -21,8 +45,8 @@ const Admin = () => {
         Welcome to Admin Dashboard
       </div>
       <div className="p-4 text-red-500">
-        <AddProduct />
-        <ManageProduct />
+        <AddProduct fetchData={fetchData} />
+        <ManageProduct products={products} fetchData={fetchData} />
       </div>
     </>
   );

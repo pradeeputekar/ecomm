@@ -1,27 +1,5 @@
 import cloudinary from "@/utils/cloudinary";
 
-// export const uploadImage = async (file, folder) => {
-//   const bufffer = await file.arrayBuffer();
-//   const bytes = Buffer.from(bufffer);
-
-//   return new Promise(async (resolve, reject) => {
-//     await cloudinary.uploader
-//       .upload_stream(
-//         {
-//           resource_type: "auto",
-//           folder: folder,
-//         },
-//         async (err, result) => {
-//           if (err) {
-//             return reject(err.message);
-//           }
-//           return resolve(result);
-//         }
-//       )
-//       .end(bytes);
-//   });
-// };
-
 export const deleteImage = async (public_id) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -30,5 +8,27 @@ export const deleteImage = async (public_id) => {
     } catch (error) {
       reject(new Error(error.message));
     }
+  });
+};
+
+export const uploadToCloudinary = async (image) => {
+  const fileBuffer = await image.arrayBuffer();
+  var mime = image.type;
+  var encoding = "base64";
+  var base64Data = Buffer.from(fileBuffer).toString("base64");
+  var fileUri = "data:" + mime + ";" + encoding + "," + base64Data;
+
+  return new Promise((resolve, reject) => {
+    var result = cloudinary.uploader
+      .upload(fileUri, {
+        invalidate: true,
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
   });
 };

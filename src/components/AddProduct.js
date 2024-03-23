@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { FaFileUpload } from "react-icons/fa";
 
-const AddProduct = () => {
+const AddProduct = ({ fetchData }) => {
   const [product, setProduct] = useState({
     title: "",
     description: "",
@@ -13,6 +13,7 @@ const AddProduct = () => {
   });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [imageName, setImageName] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +22,10 @@ const AddProduct = () => {
 
   const handleImageUpload = (e) => {
     const item = e.target.files[0];
+    if (!item) {
+      return;
+    }
+    setImageName(item.name);
     setImage(item);
   };
 
@@ -50,6 +55,9 @@ const AddProduct = () => {
       await axios.post("/api/products", formData);
       toast.success("Product Added Successfully");
       setProduct({ title: "", description: "", price: "", stock_qty: "" });
+      setImage(null);
+      setImageName("");
+      fetchData();
     } catch (error) {
       console.error("Error adding product:", error);
       toast.error("failed to add product");
@@ -60,10 +68,12 @@ const AddProduct = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-lg font-bold">Add New Product :</h1>
+      <div className="py-2 my-2 text-center bg-orange-400 text-red-700 font-bold">
+        Add New Product
+      </div>
 
       <div className="w-full flex flex-col gap-2 ">
-        <label className="text-sm font-bold">Title</label>
+        <label className="text-sm font-bold">Name :</label>
         <input
           type="text"
           className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
@@ -74,7 +84,7 @@ const AddProduct = () => {
         />
       </div>
       <div className="w-full flex flex-col gap-2">
-        <label className="text-sm font-bold">Description</label>
+        <label className="text-sm font-bold">Description :</label>
         <textarea
           rows={3}
           className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
@@ -86,7 +96,7 @@ const AddProduct = () => {
       </div>
 
       <div className="w-full flex flex-col gap-2 ">
-        <label className="text-sm font-bold">Price</label>
+        <label className="text-sm font-bold">Price (₹) :</label>
         <input
           className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
           type="number"
@@ -98,7 +108,7 @@ const AddProduct = () => {
       </div>
 
       <div className="w-full flex flex-col gap-2 ">
-        <label className="text-sm font-bold">Stock Quantity</label>
+        <label className="text-sm font-bold">Stock Quantity :</label>
         <input
           className="ring-1 ring-red-200 p-4 rounded-sm placeholder:text-red-200 outline-none"
           type="number"
@@ -113,10 +123,8 @@ const AddProduct = () => {
           className="text-sm font-semibold cursor-pointer flex gap-4 items-center"
           htmlFor="file"
         >
+          <span className="text-sm font-bold">Upload Image :</span>
           <FaFileUpload size={30} />
-          <span>
-            {image === null ? "Upload Product Image" : "Image Uploaded"}
-          </span>
         </label>
         <input
           type="file"
@@ -126,8 +134,12 @@ const AddProduct = () => {
           className="hidden"
           onChange={handleImageUpload}
         />
+        <span className="text-blue-500">
+          {imageName === "" ? "No Image Uploaded" : imageName}
+        </span>
       </div>
       <button
+        disabled={loading}
         type="submit"
         className="bg-red-500 p-4 text-white w-48 rounded-md relative h-14 flex items-center justify-center"
       >

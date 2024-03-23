@@ -1,6 +1,6 @@
 import { connectMongoDB } from "@/utils/db";
 import Product from "@/models/products";
-import cloudinary from "@/utils/cloudinary";
+import { uploadToCloudinary } from "@/utils/upload-image";
 import { NextResponse } from "next/server";
 
 connectMongoDB();
@@ -32,30 +32,9 @@ export async function POST(req) {
   const price = await data.get("price");
   const stock_qty = await data.get("stock_qty");
   const image = await data.get("image");
-  const fileBuffer = await image.arrayBuffer();
-
-  var mime = image.type;
-  var encoding = "base64";
-  var base64Data = Buffer.from(fileBuffer).toString("base64");
-  var fileUri = "data:" + mime + ";" + encoding + "," + base64Data;
 
   try {
-    const uploadToCloudinary = () => {
-      return new Promise((resolve, reject) => {
-        var result = cloudinary.uploader
-          .upload(fileUri, {
-            invalidate: true,
-          })
-          .then((result) => {
-            resolve(result);
-          })
-          .catch((error) => {
-            console.log(error);
-            reject(error);
-          });
-      });
-    };
-    const result = await uploadToCloudinary();
+    const result = await uploadToCloudinary(image);
     const datashow = await Product.create({
       title: title,
       description: description,

@@ -19,7 +19,13 @@ function CartItems({ item }) {
     <>
       <div className="flex items-center justify-between my-2">
         <div>
-          <Image src={item.image_url} alt="" width={100} height={500} />
+          <Image
+            src={item.image_url}
+            alt="product_img"
+            width={100}
+            height={500}
+            className="object-cover overflow-hidden rounded-md"
+          />
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-xl font-semibold">{item.title}</h1>

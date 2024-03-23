@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleteLoading, setDeleteLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,77 +48,78 @@ const OrderList = () => {
           Your Orders are empty, please buy some Products
         </div>
       ) : (
-        <div className="p-4 overflow-x-auto">
-          <table className="w-full border-separate border-spacing-1">
-            <thead>
-              <tr className="text-left">
-                <th className="min-w-max">Order ID</th>
-                <th className="min-w-max">Transaction ID</th>
-                <th className="min-w-max">Customer Name</th>
-                <th className="min-w-max">Order Date</th>
-                <th className="min-w-max">Total Amount</th>
-                <th className="min-w-max">Products</th>
-                <th className="min-w-max">Status</th>
-                <th className="min-w-max">Payment</th>
-                <th className="min-w-max">Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((item) => (
-                <tr
-                  className={`${
-                    item.status === "Paid" && "bg-green-200"
-                  } text-left`}
-                  key={item._id}
-                >
-                  <td className="py-6 px-1">{item._id}</td>
-                  <td className="py-6 px-1">
-                    {item.status === "Not Paid" ? "NIL" : item.intent_id}
-                  </td>
-                  <td className="py-6 px-1">{item.name}</td>
-                  <td className="py-6 px-1">
-                    {item.createdAt.toString().slice(0, 10)}
-                  </td>
-                  <td className="py-6 px-1">₹{item.finalPayment}</td>
-                  <td className="py-6 px-1">
-                    {item.allProducts.map((product, index) => (
-                      <span key={index}>
-                        {product.title}{" "}
-                        {index < item.allProducts.length - 1 && ", "}
-                      </span>
-                    ))}
-                  </td>
-                  <td className="py-6 px-1">{item.status}</td>
-                  <td className="py-6 px-1">
-                    <button
-                      disabled={item.status === "Paid"}
-                      className={`p-2 ${
-                        item.status === "Paid"
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-green-600"
-                      } text-white rounded-xl`}
-                      onClick={() => {
-                        handlePay(item._id);
-                      }}
-                    >
-                      Re-Pay
-                    </button>
-                  </td>
-                  <td className="py-6 px-1">
-                    <button
-                      className="p-2 bg-red-500 text-white rounded-xl"
-                      onClick={() => {
-                        handleDelete(item._id);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
+        <>
+          <div className="p-2 m-2 text-center bg-yellow-400 text-blue-700 font-bold">
+            Track your orders
+          </div>
+          <div className="p-2 overflow-x-auto">
+            <table className="w-full border-separate">
+              <thead>
+                <tr className="bg-red-500 text-white">
+                  <th className="py-2">Order ID</th>
+                  <th>Transaction ID</th>
+                  <th>Customer Name</th>
+                  <th>Order Date</th>
+                  <th>Total Amount</th>
+                  <th>Products</th>
+                  <th>Payment Status</th>
+                  <th>Delete Order</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {orders.map((item, index) => (
+                  <tr
+                    className={`${
+                      index % 2 === 0 ? " bg-gray-300" : "bg-white"
+                    } text-black text-center border-b border-gray-300`}
+                    key={item._id}
+                  >
+                    <td className="py-2">{item._id}</td>
+                    <td>
+                      {item.status === "Not Paid" ? "NIL" : item.intent_id}
+                    </td>
+                    <td>{item.name}</td>
+                    <td>{item.createdAt.toString().slice(0, 10)}</td>
+                    <td>₹{item.finalPayment}</td>
+                    <td>
+                      {item.allProducts.map((product, index) => (
+                        <span key={index}>
+                          {product.title}{" "}
+                          {index < item.allProducts.length - 1 && ", "}
+                        </span>
+                      ))}
+                    </td>
+                    <td>
+                      <button
+                        disabled={item.status === "Paid"}
+                        className={`${
+                          item.status === "Paid"
+                            ? "text-green-700"
+                            : "text-blue-900"
+                        }`}
+                        onClick={() => {
+                          handlePay(item._id);
+                        }}
+                      >
+                        {item.status === "Paid" ? "Paid" : "Pay Now"}
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="text-red-700"
+                        onClick={() => {
+                          handleDelete(item._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </>
   );
