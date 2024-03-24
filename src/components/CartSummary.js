@@ -73,7 +73,7 @@ function CartSummary({ finalitems }) {
           finalPayment === "0" && "opacity-50 cursor-not-allowed"
         }`}
         onClick={handleCheckout}
-        disabled={finalPayment === "0"}
+        disabled={finalPayment === "0" || loading}
       >
         {loading ? "Processing" : "Buy Now"}
       </button>

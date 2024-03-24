@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const OrderList = () => {
   };
 
   const handleDelete = async (orderId) => {
+    setLoadingDelete(true);
     try {
       await axios.delete("/api/orders/" + orderId);
       toast.success("Order deleted successfully");
@@ -36,6 +38,8 @@ const OrderList = () => {
     } catch (error) {
       console.log(error);
       toast.error("failed to delete order");
+    } finally {
+      setLoadingDelete(false);
     }
   };
 
@@ -106,6 +110,7 @@ const OrderList = () => {
                     </td>
                     <td>
                       <button
+                        disabled={loadingDelete}
                         className="text-red-700"
                         onClick={() => {
                           handleDelete(item._id);

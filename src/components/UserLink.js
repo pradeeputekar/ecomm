@@ -34,7 +34,7 @@ const UserLink = ({ vertical, onCloseMenu }) => {
               onClick={vertical ? handleLinkClick : undefined}
               href="/admin"
             >
-              Admin_Dashboard
+              Dashboard
             </Link>
           )}
 

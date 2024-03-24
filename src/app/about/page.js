@@ -25,7 +25,8 @@ const About = () => {
           <p className="mb-2">
             <b>Viewing Order History:</b> Users have access to their order
             history, where they can track the status of their past purchases,
-            view order details.
+            view order details. if a payment fails, they can retry their
+            payment.
           </p>
           <p className="mb-2">
             <b>User Authentication:</b> Normal users have the option to create
@@ -37,16 +38,12 @@ const About = () => {
         <h1 className="text-2xl font-bold mb-2">Features for Admin Users:</h1>
         <div className="mb-6">
           <p className="mb-2">
-            <b>Managing Products:</b> Admin users have the privilege to add new
-            products to the platform, including specifying details such as
-            product name, description, price, and images. They can also delete
-            products from the home page.
+            <b>Managing Products:</b> Admin users have the privilege of being
+            able to add, update, and delete products from the admin dashboard.
           </p>
           <p className="mb-2">
             <b>Viewing Orders:</b> Admin users can access a comprehensive
-            overview of all orders placed on the platform, regardless of the
-            user who made the purchase. This allows them to track sales, monitor
-            inventory levels, and analyze buying patterns.
+            overview of all orders placed on the platform on the order page.
           </p>
           <p className="mb-2">
             <b>User Authentication:</b> Admin users cannot create a new account
@@ -67,10 +64,12 @@ const About = () => {
             <tbody>
               <tr>
                 <th className="px-4 py-2">Email:</th>
-                <td className="px-4 py-2">user@test.com</td>
+                <td className="px-4 py-2">user1@test.com</td>
+                <td className="px-4 py-2">user2@test.com</td>
               </tr>
               <tr>
                 <th className="px-4 py-2">Password:</th>
+                <td className="px-4 py-2">user123</td>
                 <td className="px-4 py-2">user123</td>
               </tr>
             </tbody>

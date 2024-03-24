@@ -115,27 +115,39 @@ function SignupForm() {
         Welcome, Create your New Account
       </h1>
       <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
+        <label className="text-blue-700 font-bold" htmlFor="Name">
+          Name :
+        </label>
         <input
+          id="name"
           type="text"
-          placeholder="Name"
+          placeholder="Enter Name"
           className="p-4 border border-gray-300 rounded-md"
           value={formData.name}
           onChange={(e) => handleChange("name", e.target.value)}
         />
         {errors.name && <div className="text-red-600">{errors.name}</div>}
 
+        <label className="text-blue-700 font-bold" htmlFor="email">
+          E-mail :
+        </label>
         <input
-          type="text"
-          placeholder="Email"
+          id="email"
+          type="email"
+          placeholder="Enter Email"
           className="p-4 border border-gray-300 rounded-md"
           value={formData.email}
           onChange={(e) => handleChange("email", e.target.value)}
         />
         {errors.email && <div className="text-red-600">{errors.email}</div>}
 
+        <label className="text-blue-700 font-bold" htmlFor="password">
+          New Password :
+        </label>
         <input
+          id="password"
           type="password"
-          placeholder="Password"
+          placeholder="Enter New Password"
           className="p-4 border border-gray-300 rounded-md"
           value={formData.password}
           onChange={(e) => handleChange("password", e.target.value)}
@@ -144,7 +156,11 @@ function SignupForm() {
           <div className="text-red-600">{errors.password}</div>
         )}
 
+        <label className="text-blue-700 font-bold" htmlFor="cpassword">
+          Confirm Password :
+        </label>
         <input
+          id="cpassword"
           type="password"
           placeholder="Confirm Password"
           className="p-4 border border-gray-300 rounded-md"

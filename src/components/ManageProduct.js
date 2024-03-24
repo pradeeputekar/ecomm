@@ -1,10 +1,12 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
 
 const ManageProduct = ({ products, fetchData }) => {
+  const [loading, setLoading] = useState(false);
   const handleDelete = async (e) => {
+    setLoading(true);
     try {
       await axios.delete("/api/products/" + e);
       toast.success("Product deleted successfully");
@@ -12,6 +14,8 @@ const ManageProduct = ({ products, fetchData }) => {
     } catch (error) {
       console.log(error);
       toast.error("failed to delete product");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -26,7 +30,7 @@ const ManageProduct = ({ products, fetchData }) => {
 
     const handleUpdate = async (e) => {
       if (
-        !selectedProduct.product ||
+        !selectedProduct.title ||
         !selectedProduct.description ||
         !selectedProduct.price ||
         !selectedProduct.stock_qty
@@ -40,6 +44,7 @@ const ManageProduct = ({ products, fetchData }) => {
       formData.append("description", selectedProduct.description);
       formData.append("price", selectedProduct.price);
       formData.append("stock_qty", selectedProduct.stock_qty);
+      setLoading(true);
       try {
         await axios.put(`/api/products/${e}`, formData);
         closeModal();
@@ -48,6 +53,8 @@ const ManageProduct = ({ products, fetchData }) => {
       } catch (error) {
         console.log(error);
         toast.error("Failed to update product");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -124,6 +131,7 @@ const ManageProduct = ({ products, fetchData }) => {
               placeholder="Stock Qty"
             />
             <button
+              disabled={loading}
               onClick={() => handleUpdate(selectedProduct._id)}
               className="bg-green-500 text-white p-2 rounded-md"
             >
@@ -168,6 +176,7 @@ const ManageProduct = ({ products, fetchData }) => {
       formData.append("image", image);
 
       try {
+        setLoading(true);
         await axios.put(`/api/imageproduct/${e}`, formData);
         setImage(null);
         closeModal();
@@ -176,6 +185,8 @@ const ManageProduct = ({ products, fetchData }) => {
       } catch (error) {
         console.error("Error adding product:", error);
         toast.error("Image Update failed");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -198,6 +209,7 @@ const ManageProduct = ({ products, fetchData }) => {
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
             />
             <button
+              disabled={loading}
               onClick={() => handleImageUpdate(product._id)}
               className="bg-green-500 text-white p-2 rounded-md"
             >
@@ -255,6 +267,7 @@ const ManageProduct = ({ products, fetchData }) => {
                 </td>
                 <td>
                   <button
+                    disabled={loading}
                     className="text-red-700"
                     onClick={() => handleDelete(product.public_id)}
                   >
