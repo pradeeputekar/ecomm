@@ -51,6 +51,11 @@ export const POST = async (req) => {
         totalItem,
         totalMRP,
         userEmail,
+        city,
+        country,
+        line1,
+        postal_code,
+        state,
       } = await req.json();
       const order = await Order.create({
         allProducts,
@@ -61,6 +66,11 @@ export const POST = async (req) => {
         totalItem,
         totalMRP,
         userEmail,
+        city,
+        country,
+        line1,
+        postal_code,
+        state,
       });
       return new NextResponse(JSON.stringify(order), { status: 201 });
     } catch (err) {

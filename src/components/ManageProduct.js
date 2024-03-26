@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import Modal from "react-modal";
 
 const ManageProduct = ({ products, fetchData }) => {
   const [loading, setLoading] = useState(false);
@@ -63,88 +62,93 @@ const ManageProduct = ({ products, fetchData }) => {
         <button className="text-green-700" onClick={openModal}>
           Update Details
         </button>
-        <Modal isOpen={isOpen} onRequestClose={closeModal}>
-          <div className="p-4 flex flex-col gap-2">
-            <h2 className="text-red-900 mb-4">Update Product Details</h2>
-            <label className="text-blue-500" htmlFor="title">
-              Title :
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={selectedProduct.title}
-              onChange={(e) =>
-                setSelectedProduct({
-                  ...selectedProduct,
-                  title: e.target.value,
-                })
-              }
-              className="block w-full p-2 border rounded-md mb-4"
-              placeholder="Product Name"
-            />
-            <label className="text-blue-500" htmlFor="description">
-              Description :
-            </label>
-            <input
-              type="text"
-              name="description"
-              value={selectedProduct.description}
-              onChange={(e) =>
-                setSelectedProduct({
-                  ...selectedProduct,
-                  description: e.target.value,
-                })
-              }
-              className="block w-full p-2 border rounded-md mb-4"
-              placeholder="Product Description"
-            />
-            <label className="text-blue-500" htmlFor="price">
-              Price :
-            </label>
-            <input
-              name="price"
-              type="number"
-              value={selectedProduct.price}
-              onChange={(e) =>
-                setSelectedProduct({
-                  ...selectedProduct,
-                  price: e.target.value,
-                })
-              }
-              className="block w-full p-2 border rounded-md mb-4"
-              placeholder="Product Price"
-            />
-            <label className="text-blue-500" htmlFor="stockQty">
-              Stock Qty :
-            </label>
-            <input
-              name="stockQty"
-              type="number"
-              value={selectedProduct.stock_qty}
-              onChange={(e) =>
-                setSelectedProduct({
-                  ...selectedProduct,
-                  stock_qty: e.target.value,
-                })
-              }
-              className="block w-full p-2 border rounded-md mb-4"
-              placeholder="Stock Qty"
-            />
-            <button
-              disabled={loading}
-              onClick={() => handleUpdate(selectedProduct._id)}
-              className="bg-green-500 text-white p-2 rounded-md"
-            >
-              Update
-            </button>
-            <button
-              onClick={closeModal}
-              className="bg-red-500 text-white p-2 rounded-md"
-            >
-              Cancel
-            </button>
+        {isOpen && (
+          <div className="fixed inset-0 flex items-center z-10">
+            <div className="absolute inset-0 bg-red-900 opacity-75"></div>
+            <div className="relative overflow-auto w-full h-3/4 mx-2 bg-white rounded-lg p-8">
+              <div className="p-4 flex flex-col text-left gap-2">
+                <h2 className="text-red-900 mb-4">Update Product Details</h2>
+                <label className="text-blue-500" htmlFor="title">
+                  Title :
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  value={selectedProduct.title}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      title: e.target.value,
+                    })
+                  }
+                  className="block w-full p-2 border rounded-md mb-4"
+                  placeholder="Product Name"
+                />
+                <label className="text-blue-500" htmlFor="description">
+                  Description :
+                </label>
+                <input
+                  type="text"
+                  name="description"
+                  value={selectedProduct.description}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      description: e.target.value,
+                    })
+                  }
+                  className="block w-full p-2 border rounded-md mb-4"
+                  placeholder="Product Description"
+                />
+                <label className="text-blue-500" htmlFor="price">
+                  Price :
+                </label>
+                <input
+                  name="price"
+                  type="number"
+                  value={selectedProduct.price}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      price: e.target.value,
+                    })
+                  }
+                  className="block w-full p-2 border rounded-md mb-4"
+                  placeholder="Product Price"
+                />
+                <label className="text-blue-500" htmlFor="stockQty">
+                  Stock Qty :
+                </label>
+                <input
+                  name="stockQty"
+                  type="number"
+                  value={selectedProduct.stock_qty}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      stock_qty: e.target.value,
+                    })
+                  }
+                  className="block w-full p-2 border rounded-md mb-4"
+                  placeholder="Stock Qty"
+                />
+                <button
+                  disabled={loading}
+                  onClick={() => handleUpdate(selectedProduct._id)}
+                  className="bg-green-500 text-white p-2 rounded-md"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="bg-red-500 text-white p-2 rounded-md"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
-        </Modal>
+        )}
       </>
     );
   };
@@ -183,7 +187,7 @@ const ManageProduct = ({ products, fetchData }) => {
         toast.success("Image Updated Successfully");
         fetchData();
       } catch (error) {
-        console.error("Error adding product:", error);
+        console.error("Error image update:", error);
         toast.error("Image Update failed");
       } finally {
         setLoading(false);
@@ -195,34 +199,39 @@ const ManageProduct = ({ products, fetchData }) => {
         <button className="text-green-700" onClick={openModal}>
           Update Image
         </button>
-        <Modal isOpen={isOpen} onRequestClose={closeModal}>
-          <div className="p-4 flex flex-col gap-4">
-            <label htmlFor="file" className="mb-2 font-bold">
-              Update Product Image
-            </label>
-            <input
-              type="file"
-              id="file"
-              accept="image/*"
-              name="Image"
-              onChange={handleImageUpload}
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
-            />
-            <button
-              disabled={loading}
-              onClick={() => handleImageUpdate(product._id)}
-              className="bg-green-500 text-white p-2 rounded-md"
-            >
-              Update
-            </button>
-            <button
-              onClick={closeModal}
-              className="bg-red-500 text-white p-2 rounded-md"
-            >
-              Cancel
-            </button>
+        {isOpen && (
+          <div className="fixed inset-0 flex items-center justify-center z-10">
+            <div className="absolute inset-0 bg-red-900 opacity-75"></div>
+            <div className="relative overflow-auto w-full h-3/4 mx-2 bg-white rounded-lg p-8">
+              <div className="p-4 flex flex-col gap-4">
+                <label htmlFor="file" className="mb-2 font-bold">
+                  Update Product Image
+                </label>
+                <input
+                  type="file"
+                  id="file"
+                  accept="image/*"
+                  name="Image"
+                  onChange={handleImageUpload}
+                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500"
+                />
+                <button
+                  disabled={loading}
+                  onClick={() => handleImageUpdate(product._id)}
+                  className="bg-green-500 text-white p-2 rounded-md"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="bg-red-500 text-white p-2 rounded-md"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
-        </Modal>
+        )}
       </>
     );
   };

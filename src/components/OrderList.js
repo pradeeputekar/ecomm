@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import ViewOrderModal from "./ViewOrderModal";
+import { useSession } from "next-auth/react";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.admin;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,13 +65,12 @@ const OrderList = () => {
               <thead>
                 <tr className="bg-red-500 text-white">
                   <th className="py-2">Order ID</th>
-                  <th>Transaction ID</th>
                   <th>Customer Name</th>
                   <th>Order Date</th>
-                  <th>Total Amount</th>
                   <th>Products</th>
                   <th>Payment Status</th>
-                  <th>Delete Order</th>
+                  {isAdmin ? <th>Delete Order</th> : null}
+                  <th>Invoice</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,12 +82,8 @@ const OrderList = () => {
                     key={item._id}
                   >
                     <td className="py-2">{item._id}</td>
-                    <td>
-                      {item.status === "Not Paid" ? "NIL" : item.intent_id}
-                    </td>
                     <td>{item.name}</td>
                     <td>{item.createdAt.toString().slice(0, 10)}</td>
-                    <td>₹{item.finalPayment}</td>
                     <td>
                       {item.allProducts.map((product, index) => (
                         <span key={index}>
@@ -108,16 +107,21 @@ const OrderList = () => {
                         {item.status === "Paid" ? "Paid" : "Pay Now"}
                       </button>
                     </td>
+                    {isAdmin ? (
+                      <td>
+                        <button
+                          disabled={loadingDelete}
+                          className="text-red-700"
+                          onClick={() => {
+                            handleDelete(item._id);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    ) : null}
                     <td>
-                      <button
-                        disabled={loadingDelete}
-                        className="text-red-700"
-                        onClick={() => {
-                          handleDelete(item._id);
-                        }}
-                      >
-                        Delete
-                      </button>
+                      <ViewOrderModal order={item} />
                     </td>
                   </tr>
                 ))}

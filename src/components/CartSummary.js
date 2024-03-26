@@ -38,6 +38,11 @@ function CartSummary({ finalitems }) {
           status: "Not Paid",
           userEmail: session?.user?.email,
           name: session?.user?.name,
+          city: "---",
+          country: "---",
+          line1: "---",
+          postal_code: "00000",
+          state: "---",
         });
         if (response.data && response.data._id) {
           const orderId = response.data._id;
@@ -45,6 +50,8 @@ function CartSummary({ finalitems }) {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
   };

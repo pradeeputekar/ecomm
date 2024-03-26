@@ -25,12 +25,12 @@ const About = () => {
           <p className="mb-2">
             <b>Viewing Order History:</b> Users have access to their order
             history, where they can track the status of their past purchases,
-            view order details. if a payment fails, they can retry their
-            payment.
+            view order details, and generate invoices on the order page. If a
+            payment fails, they can retry their payment.
           </p>
           <p className="mb-2">
-            <b>User Authentication:</b> Normal users have the option to create
-            an account using their email and password. Alternatively, they can
+            <b>User Authentication:</b> Users have the option to create an
+            account using their email and password. Alternatively, they can
             choose to log in using their Google account for added convenience.
           </p>
         </div>
@@ -42,11 +42,12 @@ const About = () => {
             able to add, update, and delete products from the admin dashboard.
           </p>
           <p className="mb-2">
-            <b>Viewing Orders:</b> Admin users can access a comprehensive
-            overview of all orders placed on the platform on the order page.
+            <b>Viewing Orders:</b> Users can access a comprehensive overview of
+            all orders placed on the platform on the order page, and they can
+            also delete orders.
           </p>
           <p className="mb-2">
-            <b>User Authentication:</b> Admin users cannot create a new account
+            <b>User Authentication:</b> Users cannot create a new account
             manually. They can only log in using the following demo credentials:
           </p>
         </div>

@@ -35,7 +35,7 @@ export const PUT = async (req, params) => {
       { status: 200 }
     );
   } catch (err) {
-    console.log(err);
+    console.log("order update error".err);
     return new NextResponse(
       JSON.stringify({ message: "Something went wrong!" }),
       { status: 500 }

@@ -5,7 +5,9 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import AddressForm from "./AddressForm";
+
+import { AddressElement } from "@stripe/react-stripe-js";
+import axios from "axios";
 
 export default function CheckoutForm({ orderId }) {
   const stripe = useStripe();
@@ -13,6 +15,7 @@ export default function CheckoutForm({ orderId }) {
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [address, setAddress] = useState(null);
 
   useEffect(() => {
     if (!stripe) {
@@ -48,10 +51,21 @@ export default function CheckoutForm({ orderId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !address) {
       // Stripe.js hasn't yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
+    }
+    const formData = new FormData();
+
+    for (const key in address) {
+      formData.append(key, address[key]);
+    }
+
+    try {
+      await axios.put(`/api/orders/${orderId}`, formData);
+    } catch (error) {
+      console.log("Address save error", error);
     }
 
     setIsLoading(true);
@@ -94,9 +108,16 @@ export default function CheckoutForm({ orderId }) {
         className="min-h-[calc(100vh-6rem)] md:min-h-[calc(100vh-15rem)] p-4 lg:px-20 xl:px-40 flex flex-col gap-8"
       >
         <PaymentElement id="payment-element" options={paymentElementOptions} />
-        <AddressForm />
+        <AddressElement
+          options={{ mode: "shipping" }}
+          onChange={(event) => {
+            if (event.complete) {
+              setAddress(event.value.address);
+            }
+          }}
+        />
         <button
-          disabled={isLoading || !stripe || !elements}
+          disabled={isLoading || !address || !stripe || !elements}
           id="submit"
           className="bg-red-500 text-white p-4 rounded-md w-28"
         >
