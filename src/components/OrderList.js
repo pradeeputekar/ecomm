@@ -65,7 +65,7 @@ const OrderList = () => {
               <thead>
                 <tr className="bg-red-500 text-white">
                   <th className="py-2">Order ID</th>
-                  <th>Customer Name</th>
+                  {isAdmin && <th>Customer Name</th>}
                   <th>Order Date</th>
                   <th>Products</th>
                   <th>Payment Status</th>
@@ -82,7 +82,7 @@ const OrderList = () => {
                     key={item._id}
                   >
                     <td className="py-2">{item._id}</td>
-                    <td>{item.name}</td>
+                    {isAdmin && <td>{item.name}</td>}
                     <td>{item.createdAt.toString().slice(0, 10)}</td>
                     <td>
                       {item.allProducts.map((product, index) => (

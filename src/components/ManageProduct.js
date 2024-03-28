@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Loader from "./Loader";
 
-const ManageProduct = ({ products, fetchData }) => {
+const ManageProduct = ({ products, fetchData, fetchLoading }) => {
   const [loading, setLoading] = useState(false);
   const handleDelete = async (e) => {
     setLoading(true);
@@ -241,53 +242,59 @@ const ManageProduct = ({ products, fetchData }) => {
       <div className="py-2 my-2 text-center bg-orange-400 text-red-700 font-bold">
         Update & Delete Product
       </div>
-      <div className="p-2 overflow-x-auto">
-        <table className="w-full border-separate">
-          <thead>
-            <tr className="bg-red-900 text-white">
-              <th className="py-2">Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Stock Qty</th>
-              <th>Update Details</th>
-              <th>Update Image</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product, index) => (
-              <tr
-                className={`${
-                  index % 2 === 0 ? "bg-gray-300" : "bg-white"
-                } text-center text-black border-b border-gray-300`}
-                key={product._id}
-              >
-                <td className="py-2">{product.title}</td>
-                <td className="w-40 max-w-40 overflow-hidden line-clamp-1">
-                  {product.description}
-                </td>
-                <td>{product.price}</td>
-                <td>{product.stock_qty}</td>
-                <td>
-                  <UpdateProductModal product={product} />
-                </td>
-                <td>
-                  <UpdateImageModal product={product} />
-                </td>
-                <td>
-                  <button
-                    disabled={loading}
-                    className="text-red-700"
-                    onClick={() => handleDelete(product.public_id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+      {fetchLoading ? (
+        <Loader />
+      ) : products.length === 0 ? (
+        <div className="text-center text-red-500"> No Products to display </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full border-separate">
+            <thead>
+              <tr className="bg-red-900 text-white">
+                <th className="py-2">Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock Qty</th>
+                <th>Update Details</th>
+                <th>Update Image</th>
+                <th>Delete</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {products.map((product, index) => (
+                <tr
+                  className={`${
+                    index % 2 === 0 ? "bg-gray-300" : "bg-white"
+                  } text-center text-black border-b border-gray-300`}
+                  key={product._id}
+                >
+                  <td className="py-2">{product.title}</td>
+                  <td className="w-40 max-w-40 overflow-hidden line-clamp-1">
+                    {product.description}
+                  </td>
+                  <td>{product.price}</td>
+                  <td>{product.stock_qty}</td>
+                  <td>
+                    <UpdateProductModal product={product} />
+                  </td>
+                  <td>
+                    <UpdateImageModal product={product} />
+                  </td>
+                  <td>
+                    <button
+                      disabled={loading}
+                      className="text-red-700"
+                      onClick={() => handleDelete(product.public_id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </>
   );
 };

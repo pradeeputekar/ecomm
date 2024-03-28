@@ -3,7 +3,7 @@ import React from "react";
 const About = () => {
   return (
     <>
-      <div className="p-4 container">
+      <div className="overflow-x-auto p-4 container">
         <h1 className="text-3xl font-bold mb-4">
           E-Commerce Application Overview:
         </h1>

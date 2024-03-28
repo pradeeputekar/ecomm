@@ -7,6 +7,7 @@ import ManageProduct from "@/components/ManageProduct";
 
 const Admin = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
   const isAdmin = session?.user?.admin;
 
@@ -17,6 +18,7 @@ const Admin = () => {
   }, [status, isAdmin]);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/products", {
         cache: "no-store",
@@ -29,6 +31,8 @@ const Admin = () => {
       setProducts(data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
   if (status === "loading") {
@@ -46,7 +50,11 @@ const Admin = () => {
       </div>
       <div className="p-4 text-red-500">
         <AddProduct fetchData={fetchData} />
-        <ManageProduct products={products} fetchData={fetchData} />
+        <ManageProduct
+          products={products}
+          fetchData={fetchData}
+          fetchLoading={loading}
+        />
       </div>
     </>
   );
