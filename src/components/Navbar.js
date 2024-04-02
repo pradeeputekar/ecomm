@@ -7,7 +7,7 @@ import { FaShopify } from "react-icons/fa";
 
 const Navbar = () => {
   return (
-    <div className="h-16 md:h-16 lg:px-4 xl:px-8 bg-black text-red-500 flex justify-between items-center ">
+    <div className="h-16 md:h-16 sticky top-0 lg:px-4 xl:px-8 bg-black text-red-500 flex justify-between items-center ">
       <div className="flex items-center">
         <Link className="mx-4 flex justify-between" href="/">
           <FaShopify size={20} /> <span>ShopCart</span>

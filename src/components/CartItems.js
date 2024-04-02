@@ -17,28 +17,28 @@ function CartItems({ item }) {
 
   return (
     <>
-      <div className="flex items-center justify-between my-2">
+      <div className="flex justify-between my-2">
         <div>
           <Image
             src={item.image_url}
-            alt="product_img"
+            alt="pr_img"
             width={100}
-            height={500}
-            className="object-cover overflow-hidden rounded-md"
+            height={200}
+            className="h-40 object-contain overflow-hidden rounded-md"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-semibold">{item.title}</h1>
+          <span className="text-xl font-semibold">{item.title}</span>
 
           <span className="text-red-500 font-semibold">
             ₹{item.price.toFixed(2)} X {item.quantity} Qty
           </span>
 
-          <div>Total Price : ₹{totalPrice} </div>
+          <span>Total Price : ₹{totalPrice} </span>
         </div>
-        <span className="cursor-pointer" onClick={handleRemoveItem}>
+        <div className="cursor-pointer" onClick={handleRemoveItem}>
           <MdClose size={30} />
-        </span>
+        </div>
       </div>
     </>
   );

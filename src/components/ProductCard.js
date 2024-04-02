@@ -26,8 +26,8 @@ const ProductCard = ({ product }) => {
         src={product.image_url}
         alt="image"
         width={300}
-        height={150}
-        className="w-full h-40 object-cover rounded-md overflow-hidden"
+        height={200}
+        className="w-full h-40 object-contain rounded-md overflow-hidden"
       />
 
       <h2 className="text-xl font-semibold">{product.title}</h2>
